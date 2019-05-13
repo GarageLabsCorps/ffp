@@ -3,7 +3,7 @@ if os.name!="posix":
 	print "You must use Linux."
 	exit()
 e=True
-while e=True:
+while e==True:
 	video=raw_input("Video: ")
 	if os.path.isfile(video):
 		e=False
