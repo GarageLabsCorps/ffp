@@ -1,0 +1,31 @@
+import os,requests
+if os.name!="posix":
+	print "You must use Linux."
+	exit()
+e=True
+while e=True:
+	video=raw_input("Video: ")
+	if os.path.isfile(video):
+		e=False
+	else:
+		print video+" doesn't exist."
+token=raw_input("Token: ")
+url='https://graph.facebook.com/me/photos?access_token='+token
+path=video.split("/")[-1]+"-frames/"
+os.system("mkdir "+path)
+os.system("ffmpeg -i "+video+" "+path+"/frame%06d.jpg")
+for f in sorted(os.listdir(path)):
+	print "Uploading "+f+"..."
+	files={'file':open(path+f,'rb')}
+	flag=requests.post(url,files=files).text
+	print "Uploading "+f+" ended.\n"+flag
+	if not "error" in flag:
+		print "Successful\nErasing "+f+" from the drive..."
+		os.remove(path+f)
+		print f+" erased."
+if [f for f in os.listdir(path) if not f.startswith('.')] == []:
+	print "All was uploaded.\nErasing "+path+"..."
+	os.rmdir(path)
+	print path+" erased."
+else:
+	print "Some frames wasn't uploaded."
