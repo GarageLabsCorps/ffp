@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os,requests
 if os.name!="posix":
 	print "You must use Linux."
